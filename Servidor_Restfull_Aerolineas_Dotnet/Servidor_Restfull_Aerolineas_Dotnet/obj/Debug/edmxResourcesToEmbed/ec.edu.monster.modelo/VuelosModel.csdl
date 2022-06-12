@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="viajecitossaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BOLETOS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NOMBRES" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="VUELO_ID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="VUELOS" Relationship="Self.FK_BOLETOS_VUELOS" FromRole="BOLETOS" ToRole="VUELOS" />
+  </EntityType>
+  <EntityType Name="VUELOS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CIUDAD_ORIGEN" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="CIUDAD_DESTINO" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="VALOR" Type="Double" />
+    <Property Name="HORA_SALIDA" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="BOLETOS" Relationship="Self.FK_BOLETOS_VUELOS" FromRole="VUELOS" ToRole="BOLETOS" />
+  </EntityType>
+  <Association Name="FK_BOLETOS_VUELOS">
+    <End Role="VUELOS" Type="Self.VUELOS" Multiplicity="1" />
+    <End Role="BOLETOS" Type="Self.BOLETOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VUELOS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="BOLETOS">
+        <PropertyRef Name="VUELO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="viajecitossaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BOLETOS" EntityType="Self.BOLETOS" />
+    <EntitySet Name="VUELOS" EntityType="Self.VUELOS" />
+    <AssociationSet Name="FK_BOLETOS_VUELOS" Association="Self.FK_BOLETOS_VUELOS">
+      <End Role="VUELOS" EntitySet="VUELOS" />
+      <End Role="BOLETOS" EntitySet="BOLETOS" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

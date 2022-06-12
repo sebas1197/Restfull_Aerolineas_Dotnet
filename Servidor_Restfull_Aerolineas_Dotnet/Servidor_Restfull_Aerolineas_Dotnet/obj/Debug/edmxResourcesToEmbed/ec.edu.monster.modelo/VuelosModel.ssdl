@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="viajecitossaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="BOLETOS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NOMBRES" Type="nchar" MaxLength="50" />
+    <Property Name="VUELO_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="VUELOS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CIUDAD_ORIGEN" Type="nchar" MaxLength="50" />
+    <Property Name="CIUDAD_DESTINO" Type="nchar" MaxLength="50" />
+    <Property Name="VALOR" Type="float" />
+    <Property Name="HORA_SALIDA" Type="datetime" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_BOLETOS_VUELOS">
+    <End Role="VUELOS" Type="Self.VUELOS" Multiplicity="1" />
+    <End Role="BOLETOS" Type="Self.BOLETOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="VUELOS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="BOLETOS">
+        <PropertyRef Name="VUELO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="viajecitossaModelStoreContainer">
+    <EntitySet Name="BOLETOS" EntityType="Self.BOLETOS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="VUELOS" EntityType="Self.VUELOS" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_BOLETOS_VUELOS" Association="Self.FK_BOLETOS_VUELOS">
+      <End Role="VUELOS" EntitySet="VUELOS" />
+      <End Role="BOLETOS" EntitySet="BOLETOS" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

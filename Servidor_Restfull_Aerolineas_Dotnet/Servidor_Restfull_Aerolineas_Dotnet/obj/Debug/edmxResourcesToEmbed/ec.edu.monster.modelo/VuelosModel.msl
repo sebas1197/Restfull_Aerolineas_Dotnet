@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="viajecitossaModelStoreContainer" CdmEntityContainer="viajecitossaEntities">
+    <EntitySetMapping Name="BOLETOS">
+      <EntityTypeMapping TypeName="viajecitossaModel.BOLETOS">
+        <MappingFragment StoreEntitySet="BOLETOS">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NOMBRES" ColumnName="NOMBRES" />
+          <ScalarProperty Name="VUELO_ID" ColumnName="VUELO_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VUELOS">
+      <EntityTypeMapping TypeName="viajecitossaModel.VUELOS">
+        <MappingFragment StoreEntitySet="VUELOS">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="CIUDAD_ORIGEN" ColumnName="CIUDAD_ORIGEN" />
+          <ScalarProperty Name="CIUDAD_DESTINO" ColumnName="CIUDAD_DESTINO" />
+          <ScalarProperty Name="VALOR" ColumnName="VALOR" />
+          <ScalarProperty Name="HORA_SALIDA" ColumnName="HORA_SALIDA" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
