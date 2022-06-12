@@ -50,57 +50,77 @@
     .oculto {
         display: none;
     }
+    #logeo{
+        margin-top: 20px;
+        margin-left: 440px;
+    }
+
 </style>
 
 <h1>Viajecitos SA</h1>
 
-<ul class="list-group">
-    <li class="list-group-item" id="listarVuelos">Listar Vuelos</li>
-    <li class="list-group-item" id="listarVuelosPrecio">Listar Vuelos por precio mayor</li>
-    <li class="list-group-item" id="comprarVuelo">Comprar Boleto</li>
-    <li class="list-group-item">A fourth item</li>
-    <li class="list-group-item">And a fifth one</li>
-</ul>
 
-<img src="https://akns-images.eonline.com/eol_images/Entire_Site/20121030/634.MonstersUniversity.jlc.112912.jpeg?fit=around%7C634:1024&output-quality=90&crop=634:1024;center,top" alt="Arqui">
+<!------ Include the above in your HEAD tag ---------->
+<div id="logeo">
 
-
-<form id="formulario">
     <div class="mb-3">
-        <label for="nombre" class="form-label">Nombre</label>
-        <input type="text" class="form-control" id="nombre">
-    </div>
-    <div class="mb-3">
-        <label for="apellido" class="form-label">Apellido</label>
-        <input type="text" class="form-control" id="apellido">
-    </div>
-    <div class="mb-3">
-        <label for="cedula" class="form-label">Cédula</label>
-        <input type="text" class="form-control" id="cedula">
+        <input type="text" placeholder="Usuario" class="form-control" id="login">
     </div> <br />
-    <div class="mb-3 form-check">
-        <label for="vuelo_id" class="form-label">Vuelo</label>
-        <select class="form-select" name="vuelo_id" id="vuelo_id"></select>
+    <div class="mb-3">
+        <input type="password" class="form-control" id="clave" placeholder="Clave">
+    </div>
+    <br /><br />
+    <button type="submit" class="btn btn-primary" id="btn_login">Ingresar</button>
+</div>
 
-    </div><br /><br />
-    <button type="submit" id="btn_comprar" class="btn btn-success">Comprar</button>
-</form>
+<div id="todo" class="oculto">
 
+    <ul class="list-group">
+        <li class="list-group-item" id="listarVuelos">Listar Vuelos</li>
+        <li class="list-group-item" id="listarVuelosPrecio">Listar Vuelos por precio mayor</li>
+        <li class="list-group-item" id="comprarVuelo">Comprar Boleto</li>
+        <li class="list-group-item" id="salir">Salir</li>
+    </ul>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th scope="col">Ciudad de origen</th>
-            <th scope="col">Ciudad de destino</th>
-            <th scope="col">Valor</th>
-            <th scope="col">Hora de salida</th>
-        </tr>
-    </thead>
-    <tbody id="tcuerpo"></tbody>
-</table>
+    <img src="https://akns-images.eonline.com/eol_images/Entire_Site/20121030/634.MonstersUniversity.jlc.112912.jpeg?fit=around%7C634:1024&output-quality=90&crop=634:1024;center,top" alt="Arqui">
 
 
+    <form id="formulario">
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre">
+        </div>
+        <div class="mb-3">
+            <label for="apellido" class="form-label">Apellido</label>
+            <input type="text" class="form-control" id="apellido">
+        </div>
+        <div class="mb-3">
+            <label for="cedula" class="form-label">Cédula</label>
+            <input type="text" class="form-control" id="cedula">
+        </div> <br />
+        <div class="mb-3 form-check">
+            <label for="vuelo_id" class="form-label">Vuelo</label>
+            <select class="form-select" name="vuelo_id" id="vuelo_id"></select>
 
+        </div><br /><br />
+        <button type="submit" id="btn_comprar" class="btn btn-success">Comprar</button>
+    </form>
+
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Ciudad de origen</th>
+                <th scope="col">Ciudad de destino</th>
+                <th scope="col">Valor</th>
+                <th scope="col">Hora de salida</th>
+            </tr>
+        </thead>
+        <tbody id="tcuerpo"></tbody>
+    </table>
+
+
+</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
@@ -111,6 +131,8 @@
         const form = document.querySelector('#formulario');
         form.classList.remove('ver')
         form.classList.add('oculto')
+
+        $('#tcuerpo').find("tr").remove();
 
         const url = 'http://localhost:50132/api/Vuelos';
         $.get(url, obj => {
@@ -132,6 +154,8 @@
         const form = document.querySelector('#formulario');
         form.classList.remove('ver')
         form.classList.add('oculto')
+
+        $('#tcuerpo').find("tr").remove();
 
         const url = 'http://localhost:50132/api/Vuelos/?aux=5';
         $.get(url, obj => {
@@ -196,13 +220,36 @@
 
             })
 
-            
-            
 
-            
+
+
+
         })
 
 
+    })
+
+    $('#btn_login').click(() => {
+
+        const usuario = $('#login').val();
+        const clave = $('#clave').val();
+
+        const url = "http://localhost:50132/api/Login?usuario=" + usuario + "&clave=" + clave;
+
+        $.get(url, obj => {
+            if (obj) {
+                document.querySelector('#logeo').classList.add('oculto');
+                document.querySelector('#todo').classList.remove('oculto');
+                document.querySelector('#todo').classList.add('ver');
+            } else {
+                alert("Credenciales incorrectas!")
+            }
+        })
+
+    })
+
+    $('#salir').click(() => {
+        location.reload();
     })
 
 </script>
