@@ -55,6 +55,51 @@
         margin-left: 440px;
     }
 
+    .ticket {
+        margin: auto;
+        border: 5px solid blue;
+        width: 600px;
+        margin-top: 20px;
+        margin-bottom: 50px;
+        padding: 10px;
+    }
+
+    .big img {
+        width: 100px;
+        height: 100px;
+        margin-left: 20px;
+        margin-top: 60px;
+    }
+
+    h2 {    
+        text-align: center;
+    }
+
+    .big h1 {
+        margin-left: 200px;
+        margin-top: -80px;
+        font-size: 20px;
+
+    }
+
+    hr {
+        width: 200px;
+        margin-left: 200px;
+        margin-top: -50px;
+    }
+
+    .titulo {
+        font-style: italic;
+    }
+
+    .big span {
+        margin-left: 210px;
+    }
+
+    strong {
+        margin-bottom: 15px;
+    }
+
 </style>
 
 <h1>Viajecitos SA</h1>
@@ -79,177 +124,217 @@
         <li class="list-group-item" id="listarVuelos">Listar Vuelos</li>
         <li class="list-group-item" id="listarVuelosPrecio">Listar Vuelos por precio mayor</li>
         <li class="list-group-item" id="comprarVuelo">Comprar Boleto</li>
+        <li class="list-group-item" id="ultimoBoleto">Listar último boleto</li>
         <li class="list-group-item" id="salir">Salir</li>
     </ul>
 
     <img src="https://akns-images.eonline.com/eol_images/Entire_Site/20121030/634.MonstersUniversity.jlc.112912.jpeg?fit=around%7C634:1024&output-quality=90&crop=634:1024;center,top" alt="Arqui">
 
 
-    <form id="formulario">
-        <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre">
-        </div>
-        <div class="mb-3">
-            <label for="apellido" class="form-label">Apellido</label>
-            <input type="text" class="form-control" id="apellido">
-        </div>
-        <div class="mb-3">
-            <label for="cedula" class="form-label">Cédula</label>
-            <input type="text" class="form-control" id="cedula">
-        </div> <br />
-        <div class="mb-3 form-check">
-            <label for="vuelo_id" class="form-label">Vuelo</label>
-            <select class="form-select" name="vuelo_id" id="vuelo_id"></select>
+    <div class="ticket" id="boleto">
 
-        </div><br /><br />
-        <button type="submit" id="btn_comprar" class="btn btn-success">Comprar</button>
-    </form>
+    </div>
 
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Ciudad de origen</th>
-                <th scope="col">Ciudad de destino</th>
-                <th scope="col">Valor</th>
-                <th scope="col">Hora de salida</th>
-            </tr>
-        </thead>
-        <tbody id="tcuerpo"></tbody>
-    </table>
+        <form id="formulario">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre">
+            </div>
+            <div class="mb-3">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="apellido">
+            </div>
+            <div class="mb-3">
+                <label for="cedula" class="form-label">Cédula</label>
+                <input type="text" class="form-control" id="cedula">
+            </div> <br />
+            <div class="mb-3 form-check">
+                <label for="vuelo_id" class="form-label">Vuelo</label>
+                <select class="form-select" name="vuelo_id" id="vuelo_id"></select>
+
+            </div><br /><br />
+            <button type="submit" id="btn_comprar" class="btn btn-success">Comprar</button>
+        </form>
 
 
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-<script>
-
-    $('#listarVuelos').click(() => {
-
-        const form = document.querySelector('#formulario');
-        form.classList.remove('ver')
-        form.classList.add('oculto')
-
-        $('#tcuerpo').find("tr").remove();
-
-        const url = 'http://localhost:50132/api/Vuelos';
-        $.get(url, obj => {
-            let result = '';
-            for (let i = 0; i < obj.length; i++) {
-                result = '<tr>';
-                result += '<td>' + obj[i].ciudadOrigen + '</td>';
-                result += '<td>' + obj[i].ciudadDestino + '</td>';
-                result += '<td>' + obj[i].valor + '</td>';
-                result += '<td>' + obj[i].horaSalida + '</td>';
-                result += '</tr>';
-                $('#tcuerpo').append(result);
-            }
-        })
-    })
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Ciudad de origen</th>
+                    <th scope="col">Ciudad de destino</th>
+                    <th scope="col">Valor</th>
+                    <th scope="col">Hora de salida</th>
+                </tr>
+            </thead>
+            <tbody id="tcuerpo"></tbody>
+        </table>
 
 
-    $('#listarVuelosPrecio').click(() => {
-        const form = document.querySelector('#formulario');
-        form.classList.remove('ver')
-        form.classList.add('oculto')
+    </div>
 
-        $('#tcuerpo').find("tr").remove();
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-        const url = 'http://localhost:50132/api/Vuelos/?aux=5';
-        $.get(url, obj => {
+    <script>
 
-            let result = '';
-            for (let i = 0; i < obj.length; i++) {
-                result = '<tr>';
-                result += '<td>' + obj[i].ciudadOrigen + '</td>';
-                result += '<td>' + obj[i].ciudadDestino + '</td>';
-                result += '<td>' + obj[i].valor + '</td>';
-                result += '<td>' + obj[i].horaSalida + '</td>';
-                result += '</tr>';
-                $('#tcuerpo').append(result);
-            }
-        })
-    })
+        $('#listarVuelos').click(() => {
 
-    $('#comprarVuelo').click(() => {
+            document.querySelector('#boleto').innerHTML = '';
 
-        const form = document.querySelector('#formulario');
-        form.classList.remove('oculto')
-        form.classList.add('ver')
+            const form = document.querySelector('#formulario');
+            form.classList.remove('ver')
+            form.classList.add('oculto')
 
-        const url2 = 'http://localhost:50132/api/Vuelos';
-        $.get(url2, obj => {
-            console.log(obj);
-            let result = '';
-            for (let i = 0; i < obj.length; i++) {
-                result = `<option value="${obj[i].ID}">${obj[i].ciudadOrigen} - ${obj[i].ciudadDestino}</option>`;
-                $('#vuelo_id').append(result);
-            }
-        })
+            $('#tcuerpo').find("tr").remove();
 
-        $('#btn_comprar').click(() => {
-
-            const nombres = $('#nombre').val();
-            const apellido = $('#apellido').val();
-            const cedula = $('#cedula').val();
-            const IDs = document.getElementById('vuelo_id').value;
-
-            const url = "http://localhost:50132/api/Cliente/?nombre=" + nombres + "&apellido=" + apellido + "&cedula=" + cedula;
-            console.log("SI");
-
+            const url = 'http://localhost:50132/api/Vuelos';
             $.get(url, obj => {
-                console.log("SI B")
+                let result = '';
+                for (let i = 0; i < obj.length; i++) {
+                    result = '<tr>';
+                    result += '<td>' + obj[i].ciudadOrigen + '</td>';
+                    result += '<td>' + obj[i].ciudadDestino + '</td>';
+                    result += '<td>' + obj[i].valor + '</td>';
+                    result += '<td>' + obj[i].horaSalida + '</td>';
+                    result += '</tr>';
+                    $('#tcuerpo').append(result);
+                }
+            })
+        })
+
+
+        $('#listarVuelosPrecio').click(() => {
+            document.querySelector('#boleto').innerHTML = '';
+            const form = document.querySelector('#formulario');
+            form.classList.remove('ver')
+            form.classList.add('oculto')
+
+            $('#tcuerpo').find("tr").remove();
+
+            const url = 'http://localhost:50132/api/Vuelos/?aux=5';
+            $.get(url, obj => {
+
+                let result = '';
+                for (let i = 0; i < obj.length; i++) {
+                    result = '<tr>';
+                    result += '<td>' + obj[i].ciudadOrigen + '</td>';
+                    result += '<td>' + obj[i].ciudadDestino + '</td>';
+                    result += '<td>' + obj[i].valor + '</td>';
+                    result += '<td>' + obj[i].horaSalida + '</td>';
+                    result += '</tr>';
+                    $('#tcuerpo').append(result);
+                }
+            })
+        })
+
+        $('#comprarVuelo').click(() => {
+            
+            document.querySelector('#boleto').innerHTML = '';
+            const form = document.querySelector('#formulario');
+            form.classList.remove('oculto')
+            form.classList.add('ver')
+
+            const url2 = 'http://localhost:50132/api/Vuelos';
+            $.get(url2, obj => {
+                let result = '';
+                for (let i = 0; i < obj.length; i++) {
+                    result = `<option value="${obj[i].ID}">${obj[i].ciudadOrigen} - ${obj[i].ciudadDestino}</option>`;
+                    $('#vuelo_id').append(result);
+                }
             })
 
+            $('#btn_comprar').click((e) => {
+                e.preventDefault();
 
-            const url3 = "http://localhost:50132/api/Cliente?aux=5";
+                const nombres = $('#nombre').val();
+                const apellido = $('#apellido').val();
+                const cedula = $('#cedula').val();
+                const IDs = document.getElementById('vuelo_id').value;
 
-            let clienteID;
+                const url = "http://localhost:50132/api/Cliente/?nombre=" + nombres + "&apellido=" + apellido + "&cedula=" + cedula;
+                console.log("SI");
 
-            $.get(url3, obj => {
-                console.log("IDCLIENTE  ", obj);
-                clienteID = obj;
-                console.log(clienteID);
-                const url4 = "http://localhost:50132/api/Boletos/?vueloID=" + IDs + "&clienteID=" + clienteID;
-
-                $.get(url4, obj => {
-                    console.log("SU");
+                $.get(url, obj => {
+                    console.log("SI B")
                 })
 
+
+                const url3 = "http://localhost:50132/api/Cliente?aux=5";
+
+                let clienteID;
+
+                $.get(url3, obj => {
+                    console.log("IDCLIENTE  ", obj);
+                    clienteID = obj;
+                    console.log(clienteID);
+                    const url4 = "http://localhost:50132/api/Boletos/?vueloID=" + IDs + "&clienteID=" + clienteID;
+
+                    $.get(url4, obj => {
+                        alert("Boleto comprado!")
+                    })
+
+                })
+                
             })
 
+            
+        })
 
+        $('#btn_login').click(() => {
 
+            const usuario = $('#login').val();
+            const clave = $('#clave').val();
 
+            const url = "http://localhost:50132/api/Login?usuario=" + usuario + "&clave=" + clave;
+
+            $.get(url, obj => {
+                if (obj) {
+                    document.querySelector('#logeo').classList.add('oculto');
+                    document.querySelector('#todo').classList.remove('oculto');
+                    document.querySelector('#todo').classList.add('ver');
+                } else {
+                    alert("Credenciales incorrectas!")
+                }
+            })
 
         })
 
 
-    })
+        $('#ultimoBoleto').click(() => {
+            const form = document.querySelector('#formulario');
+            form.classList.remove('ver')
+            form.classList.add('oculto')
+            const url5 = "http://localhost:50132/api/Boletos";
 
-    $('#btn_login').click(() => {
+            $.get(url5, obj => {
 
-        const usuario = $('#login').val();
-        const clave = $('#clave').val();
 
-        const url = "http://localhost:50132/api/Login?usuario=" + usuario + "&clave=" + clave;
+                    let html = `
+    
+                            <h2 class="titulo">Ticket de vuelo</h2>
+                            <div class="big">
+                                <img src="https://cdn2.vectorstock.com/i/1000x1000/09/41/plane-icon-flight-transport-sign-vector-10490941.jpg" alt="">
+                                <h1>${obj[0].ciudad_origen} -> ${obj[0].ciudad_destino}</h1><br><br>
+                                <hr>
+                                <h2>ID de vuelo: ${obj[0].vuelo_id}</h2>
+                                <span>|||||||||||||||||||||||||||||||||||||||||||||||||||||</span>
+                            </div>
+                            <div class="small">
+                                <strong> Nombre:</strong> ${obj[0].nombre} <br>
+                                <strong>Apellido:</strong> ${obj[0].apellido} <br>
+                                <strong>Cédula:</strong> ${obj[0].cedula} <br>
+                                <strong>Valor:</strong> ${obj[0].valor} <br>
+                                <strong>Hora de salida:</strong> ${obj[0].hora_salida} <br>
+                            </div>`
 
-        $.get(url, obj => {
-            if (obj) {
-                document.querySelector('#logeo').classList.add('oculto');
-                document.querySelector('#todo').classList.remove('oculto');
-                document.querySelector('#todo').classList.add('ver');
-            } else {
-                alert("Credenciales incorrectas!")
-            }
+                    document.querySelector('#boleto').innerHTML += html;
+
+                
+            })
         })
 
-    })
+        $('#salir').click(() => {
+            location.reload();
+        })
 
-    $('#salir').click(() => {
-        location.reload();
-    })
-
-</script>
+    </script>

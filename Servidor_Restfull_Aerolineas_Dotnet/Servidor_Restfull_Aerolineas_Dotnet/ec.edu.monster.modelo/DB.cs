@@ -32,12 +32,12 @@ namespace Servidor_Restfull_Aerolineas_Dotnet.ec.edu.monster.modelo
         }
 
 
-        public List<BoletosModel> comprarVuelo(int vueloID, int clienteID)
+        public Boolean comprarVuelo(int vueloID, int clienteID)
         {
             String cad = "Data Source=DESKTOP-V7GCBLV; Initial Catalog=viajecitossa; Integrated Security=True";
             String query = "INSERT INTO boletos (VUELO_ID, CLIENTE_ID) VALUES ('"+ vueloID + "', '" + clienteID + "');";
 
-            List<BoletosModel> boletos = new List<BoletosModel>();
+            
             SqlConnection con = new SqlConnection(cad);
             SqlCommand cmd = new SqlCommand(query, con);
             con.Open();
@@ -45,14 +45,14 @@ namespace Servidor_Restfull_Aerolineas_Dotnet.ec.edu.monster.modelo
             SqlDataReader rdr = cmd.ExecuteReader();
             if (rdr.HasRows)
             {
+                return true;
 
-                while (rdr.Read())
-                {
-                    BoletosModel model = new BoletosModel(int.Parse(rdr["vuelo_id"].ToString()), int.Parse(rdr["cliente_id"].ToString()));
-                    boletos.Add(model);
-                }
             }
-            return boletos;
+            else
+            {
+                return false;
+            }
+            
 
         }
 
@@ -149,6 +149,33 @@ namespace Servidor_Restfull_Aerolineas_Dotnet.ec.edu.monster.modelo
             }
 
             return id;
+        }
+
+        public List<BoletosModel> boleto()
+        {
+            String cad = "Data Source=DESKTOP-V7GCBLV; Initial Catalog=viajecitossa; Integrated Security=True";
+            String query = "SELECT * FROM BOLETOS JOIN Cliente on CLIENTE_ID = Cliente.ID JOIN VUELOS on VUELO_ID = VUELOS.ID WHERE BOLETOS.ID = (SELECT MAX(ID) FROM BOLETOS);";
+
+            List<BoletosModel> boletos = new List<BoletosModel>();
+            SqlConnection con = new SqlConnection(cad);
+            SqlCommand cmd = new SqlCommand(query, con);
+            con.Open();
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+            if (rdr.HasRows)
+            {
+
+                while (rdr.Read())
+                {
+                    BoletosModel model = new BoletosModel(rdr["nombre"].ToString(), rdr["apellido"].ToString(),
+                        rdr["cedula"].ToString(), int.Parse(rdr["vuelo_id"].ToString()),
+                        rdr["ciudad_origen"].ToString(), rdr["ciudad_destino"].ToString(),
+                        float.Parse(rdr["valor"].ToString()), rdr["hora_salida"].ToString());
+                    boletos.Add(model);
+                }
+            }
+
+            return boletos;
         }
 
     }

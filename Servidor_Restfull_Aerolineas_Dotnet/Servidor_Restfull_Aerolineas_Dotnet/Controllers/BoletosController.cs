@@ -18,11 +18,16 @@ namespace Servidor_Restfull_Aerolineas_Dotnet.Controllers
        
 
 
-        public List<BoletosModel> Get(int vueloID, int clienteID)
+        public Boolean Get(int vueloID, int clienteID)
         {
             return this.bd.comprarVuelo(vueloID, clienteID);
         }
 
+        // GET api/values
+        public List<BoletosModel> Get()
+        {
+            return this.bd.boleto();
+        }
 
     }
 }
